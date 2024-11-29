@@ -1,9 +1,5 @@
 #include "chess.h"
 
-// Constructor for the Square class
-Square::Square()
-    : piece(EMPTY), color(NONE)  // Initialize piece and color in constructor initialization list
-{}
 
 // Sets the space of the current square to the given space
 void Square::setSpace(const Square& space)
@@ -13,6 +9,7 @@ void Square::setSpace(const Square& space)
     piece = space.getPiece();
 }
 
+// Constructor for the Square class
 // Sets the current square to empty
 void Square::setEmpty()
 {
