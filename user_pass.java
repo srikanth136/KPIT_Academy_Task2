@@ -14,15 +14,15 @@
 // }
 
 
-// import java.security.NoSuchAlgorithmException;
-// import java.security.spec.InvalidKeySpecException;
-// import java.security.spec.KeySpec;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 
-// import javax.crypto.SecretKeyFactory;
-// import javax.crypto.spec.PBEKeySpec;
-// import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
-// import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 // public class Authentication {
 //     public boolean login(String username, String password) {
