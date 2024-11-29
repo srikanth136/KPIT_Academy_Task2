@@ -2,33 +2,33 @@
 
 // Constructor for the Square class
 Square::Square()
-{
-    piece = EMPTY;
-    color = NONE;
-}
+    : piece(EMPTY), color(NONE)  // Initialize piece and color in constructor initialization list
+{}
 
 // Sets the space of the current square to the given space
-void Square::setSpace(Square* space)
+void Square::setSpace(const Square& space)
 {
-    color = space->getColor();
-    piece = space->getPiece();
+    // Use const reference to avoid copying the Square object
+    color = space.getColor();
+    piece = space.getPiece();
 }
 
 // Sets the current square to empty
 void Square::setEmpty()
 {
+    // Use NONE instead of '0' for better readability
     color = NONE;
     piece = EMPTY;
 }
 
 // Gets the piece of the current square
-Piece Square::getPiece()
+Piece Square::getPiece() const
 {
     return piece;
 }
 
 // Gets the color of the current square
-Color Square::getColor()
+Color Square::getColor() const
 {
     return color;
 }
@@ -41,7 +41,7 @@ void Square::setPieceAndColor(Piece p, Color c)
 }
 
 // Prints the board in a human-readable format
-void Board::printBoard()
+void Board::printBoard() const
 {
     using namespace std;
     cout << "  y: 0  1  2  3  4  5  6  7" << endl << "x:" << endl;
@@ -69,7 +69,8 @@ void Board::printBoard()
                     break;
                 case EMPTY: cout << " " << "\21" << " ";
                     break;
-                default: cout << "XXX";
+                default:
+                    cout << " Invalid Piece ";
                     break;
             }
         }
@@ -95,17 +96,18 @@ bool Board::doMove()
         x2 = move[2] - 48;
         y2 = move[3] - 48;
 
-        if (getSquare(x1, y1)->getColor() == turn)
+        if (!isValidMove(x1, y1, x2, y2))
         {
-            if (makeMove(x1, y1, x2, y2) == false)
-            {
-                cout << "Invalid move, try again." << endl;
-            }
-            else
-                stop = true;
+            cout << "Invalid move, try again." << endl;
+        }
+        else if (!makeMove(x1, y1, x2, y2))
+        {
+            cout << "Invalid move, try again." << endl;
         }
         else
-            cout << "That's not your piece. Try again." << endl;
+        {
+            stop = true;
+        }
     }
 
     // Check if the game is over
@@ -166,16 +168,20 @@ void Board::setBoard()
     for (int i = 2; i < 6; i++)
     {
         for (int j = 0; j < 8; j++)
+        {
             square[j][i].setPieceAndColor(EMPTY, NONE);
+        }
     }
 
     // Set the coordinates of the squares
     for (int i = 0; i < 8; i++)
+    {
         for (int j = 0; j < 8; j++)
         {
             square[i][j].setX(i);
             square[i][j].setY(j);
         }
+    }
 }
 
 // Starts a game of chess
@@ -185,3 +191,22 @@ bool Board::playGame()
     printBoard();
     return doMove();
 }
+
+bool Board::isValidMove(int x1, int y1, int x2, int y2) const
+{
+    //Check x, y coordinates in range 0 - 7
+    if (x1 < 0 || x1 > 7 || x2 < 0 || x2 > 7 || y1 < 0 || y1 > 7 || y2 < 0 || y2 > 7)
+    {
+        return false;
+    }
+    //Check if start and end is not same position
+    if (x1 == x2 && y1 == y2)
+    {
+        return false;
+    }
+    //Check for occupying your player at destination
+    if (square[x1][y1].getColor() == square[x2][y2].getColor())
+    {
+        return false;
+    }
+    if (square[x2][y2].getPiece() == EMPTY && square[x1][y1 
